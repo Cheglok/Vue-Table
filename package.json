@@ -1,0 +1,7 @@
+{
+  "name": "Vue-Table",
+  "version": "1.0.0",
+  "devDependencies": {
+    "axios": "^1.1.2"
+  }
+}

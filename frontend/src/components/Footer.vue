@@ -1,8 +1,9 @@
 <template>
     <footer class="main-footer">
         <div class="container">
-            <p class="main-footer__text">Использовался Vue3 options Api, ванильный CSS, flexbox, fontawesome, nodeJs, expressgit </p>
+            <p class="main-footer__text">Использовался Vue3 options Api, ванильный CSS, flexbox, fontawesome, nodeJs, express, axios, MySQL</p>
             <p class="main-footer__text">запуск сервера из папки backend "node index"</p>
+            <p class="main-footer__text">Дамп базы данных в папке dump. Настройки БД в backend/config/database.js</p>
         </div>
     </footer>
 </template>
