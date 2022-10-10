@@ -1,6 +1,8 @@
 # Vue-Table
 Это тестовое задание на должность "программист Vue"
 
+![Image text](https://github.com/Cheglok/Vue-Table/blob/main/Vue-table.jpg?raw=true)
+
 Требования к таблице:
 
 1) Таблица должна содержать 4 колонки:
