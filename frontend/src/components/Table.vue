@@ -3,14 +3,13 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            tableData: [],
-            setData: [],
+            tableData: [], //Данные, которые приходят с сервера
+            setData: [],   //Данные с учетом фильтрации
             filterField: '',
             filterOption: '',
             filterValue: '',
-            tableRows: 4,
+            tableRows: 4,  //Число строк в таблице, изменяемое
             currentPage: 1,
-            items: [],
         }
     },
     methods: {
@@ -33,7 +32,7 @@ export default {
             this.resetFilter();
             switch (this.filterOption) {
                 case 'equal':
-                    this.setData = this.setData.filter(item => item[this.filterField] == this.filterValue);
+                    this.setData = this.setData.filter(item => String(item[this.filterField]) === String(this.filterValue));
                     break;
                 case 'contain':
                     this.setData = this.setData.filter(item => String(item[this.filterField]).includes(this.filterValue));
@@ -100,7 +99,7 @@ export default {
                     </div>
                     <div class="form__button-group">
                         <button type="submit" class="form__button">Filter</button>
-                        <button type="button" @click.prevent="resetFilter" class="form__button">reset</button>
+                        <button type="button" @click.prevent="resetFilter" class="form__button">Reset</button>
                     </div>
                 </div>
             </form>
@@ -113,9 +112,10 @@ export default {
                         <p class="table__head-text">Name</p>
                         <div class="table__button-group button-group">
                             <button class="button-group__button" @click="sortTableDown('name')"><i
-                                class="fa fa-arrow-down" aria-hidden="true"></i></button>
-                            <button class="button-group__button" @click="sortTableUp('name')"><i class="fa fa-arrow-up"
-                                                                                                 aria-hidden="true"></i>
+                                class="fa fa-arrow-down" aria-hidden="true"></i>
+                            </button>
+                            <button class="button-group__button" @click="sortTableUp('name')">
+                                <i class="fa fa-arrow-up" aria-hidden="true"></i>
                             </button>
                         </div>
                     </th>
@@ -123,32 +123,37 @@ export default {
                         <p class="table__head-text">Amount</p>
                         <div class="table__button-group button-group">
                             <button class="button-group__button" @click="sortTableUp('amount')"><i
-                                class="fa fa-arrow-up" aria-hidden="true"></i></button>
+                                class="fa fa-arrow-up" aria-hidden="true"></i>
+                            </button>
                             <button class="button-group__button" @click="sortTableDown('amount')"><i
-                                class="fa fa-arrow-down" aria-hidden="true"></i></button>
+                                class="fa fa-arrow-down" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </th>
                     <th class="table__head">
                         <p class="table__head-text">Distance</p>
                         <div class="table__button-group button-group">
                             <button class="button-group__button" @click="sortTableUp('distance')"><i
-                                class="fa fa-arrow-up" aria-hidden="true"></i></button>
+                                class="fa fa-arrow-up" aria-hidden="true"></i>
+                            </button>
                             <button class="button-group__button" @click="sortTableDown('distance')"><i
-                                class="fa fa-arrow-down" aria-hidden="true"></i></button>
+                                class="fa fa-arrow-down" aria-hidden="true"></i>
+                            </button>
                         </div>
                     </th>
                 </tr>
                 <tr class="table__row" v-if="displayData.length" v-for="item in displayData">
                     <td class="table__data" v-for="value in item">{{ value }}</td>
                 </tr>
-                <tr v-else>
+                <tr class="table__row" v-else>
                     <td><h3>Нет записей</h3></td>
                 </tr>
             </table>
             <div class="navigation">
                 <div class="pagination-group">
-                    <button class="pagination-group__button" @click="goToPage(currentPage - 1)">
-                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    <button :class="[currentPage === 1 ? 'pagination-group__button_style_disabled': '', 'pagination-group__button']"
+                            @click="goToPage(currentPage - 1)">
+                        <i class="fa fa-arrow-left" aria-hidden="true" v-if="currentPage > 1"></i>
                     </button>
                     <button class="pagination-group__button" v-if="currentPage > 1" @click="goToPage(1)">1</button>
                     <!-- показывай единичку слева если текущая страница не первая-->
@@ -164,7 +169,7 @@ export default {
                         4
                     </button>
                     <!-- показывай четвёрку если текущая страница старше 4 и страниц не более 5-->
-                    <button class="dottes" v-if="currentPage > 3 && pages > 5"> ...</button>
+                    <button class="pagination-group__button_style_disabled pagination-group__button" v-if="currentPage > 3 && pages > 5"> ...</button>
                     <!-- показывай многоточие если текущая страница старше 3 и страниц более 5-->
                     <button class="pagination-group__button"
                             v-if="(currentPage == pages || currentPage == pages -1) && pages > 5"
@@ -185,7 +190,7 @@ export default {
                             @click="goToPage(3)">3
                     </button>
                     <!-- показывай 3 если текущая страница 1 или 2 и страниц более 2-->
-                    <button class="dottes" v-if="currentPage < pages - 2 && pages > 5"> ...</button>
+                    <button class="pagination-group__button pagination-group__button_style_disabled" v-if="currentPage < pages - 2 && pages > 5"> ...</button>
                     <!-- показывай многоточие если текущая страница младше предпоследней и страниц более 5-->
                     <button class="pagination-group__button" v-if="pages == 5 && currentPage < 4" @click="goToPage(4)">
                         4
@@ -199,8 +204,9 @@ export default {
                             @click="goToPage(pages)">{{ pages }}
                     </button>
                     <!-- показывай последнюю страницу если текущая страница не последняя-->
-                    <button class="pagination-group__button" @click="goToPage(currentPage + 1)">
-                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    <button :class="[currentPage === pages ? 'pagination-group__button_style_disabled': '', 'pagination-group__button']"
+                            @click="goToPage(currentPage + 1)">
+                        <i class="fa fa-arrow-right" aria-hidden="true" v-if="currentPage < pages"></i>
                     </button>
                 </div>
                 <div class="rows-controls">
