@@ -1,7 +1,8 @@
 <template>
     <footer class="main-footer">
         <div class="container">
-            <p class="main-footer__text">Использовался Vue3 options Api, ванильный CSS, flexbox, fontawesom</p>
+            <p class="main-footer__text">Использовался Vue3 options Api, ванильный CSS, flexbox, fontawesome, nodeJs, expressgit </p>
+            <p class="main-footer__text">запуск сервера из папки backend "node index"</p>
         </div>
     </footer>
 </template>
