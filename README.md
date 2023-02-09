@@ -34,3 +34,10 @@
 - возможности нативного JS, Vue и Node.JS
 - Axios
 - CSS библиотеки
+
+
+Использовался Vue3 options Api, ванильный CSS, flexbox, fontawesome, nodeJs, express, axios, MySQL, минимальная адаптивность с медиа-запросами
+
+запуск сервера из папки backend "node index"
+
+Дамп базы данных в папке dump. Настройки БД в backend/config/database.js
